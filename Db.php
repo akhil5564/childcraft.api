@@ -1,21 +1,14 @@
 <?php
-class Db {
-    private $host = "localhost";
-    private $db_name = "childcraft";
-    private $username = "root";
-    private $password = "";
-    public $conn;
+$host = "localhost";
+$db_name = "childcraft_db";
+$username = "childuser";
+$password = "password123";
 
-    public function getConnection() {
-        $this->conn = null;
-        try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name,
-                                  $this->username, $this->password);
-            $this->conn->exec("set names utf8");
-        } catch(PDOException $exception) {
-            echo "Connection error: " . $exception->getMessage();
-        }
-        return $this->conn;
-    }
+try {
+    $conn = new PDO("mysql:host=$host;dbname=$db_name", $username, $password);
+    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    echo json_encode(["status" => "success", "message" => "Connected to database successfully"]);
+} catch(PDOException $e) {
+    echo json_encode(["status" => "error", "message" => "Connection failed: " . $e->getMessage()]);
 }
-
+?>
